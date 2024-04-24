@@ -4,6 +4,7 @@ Contains the Database Storage class
 """
 
 import models
+from models.base_model import BaseModel, Base
 from models.county import County
 from models.subcounty import Subcounty
 from models.church import Church
@@ -15,7 +16,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"County": County, "Subcounty": Subcounty, "Church": Church,
-           "Infinance": Infinance, "Outfinance": Outfinance, 
+           "Infinance": Infinance, "Outfinance": Outfinance,
            "Deptfinance": Deptfinance}
 
 
@@ -42,7 +43,7 @@ class DBStorage:
         new_dict = {}
 
         for clss in classes:
-            if cls is None orcls is classes{clss] or cls is clss:
+            if cls is None or cls is classes[clss] or cls is clss:
                 objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
                     key = obj.__class__.name__ + '.' + obj.id
@@ -68,7 +69,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine,
                                     expire_on_commit=False)
-        session = scoped_session(sess_factory)
+        Session = scoped_session(sess_factory)
         self.__session = Session
 
     def close(self):
@@ -90,17 +91,17 @@ class DBStorage:
 
         return None
 
-    def count(self, cls=None)
-    """
-    Count number of objects
-    """
-    all_class = classes.values()
+    def count(self, cls=None):
+        """
+        Count number of objects
+        """
+        all_class = classes.values()
 
-    if not cls:
-        count = 0
-        for clas in all_class:
-            count += len(models.storage.all(cls).values())
-    else:
-        count = len(models.storage.all(cls).values())
+        if not cls:
+            count = 0
+            for clas in all_class:
+                count += len(models.storage.all(cls).values())
+        else:
+            count = len(models.storage.all(cls).values())
 
-    return count
+        return count
