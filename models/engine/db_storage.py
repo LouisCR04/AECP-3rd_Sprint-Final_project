@@ -1,0 +1,98 @@
+#!/usr/bin/python3
+"""
+Contains the Database Storage class
+"""
+
+import models
+from os import getenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+classes = {}
+
+class DBStorage:
+    """Interacts with the MySQL database"""
+    __engine = None
+    __session = None
+
+    def __init__(self):
+        """Instatntiates a DBStorage object"""
+        MSQL_USER = getenv('MSQL_USER')
+        MSQL_PWD = getenv('MSQL_PWD')
+        MSQL_HOST = getenv('MSQL_HOST')
+        MSQL_DB = getenv('MSQL_DB')
+        MSQL_ENV = getenv('MSQL_ENV')
+
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(MSQL_USER,
+                                             MSQL_PWD,
+                                             MSQL_HOST,
+                                             MSQL_DB))
+
+    def all(self, cls=None):
+        """Queries the current database session"""
+        new_dict = {}
+
+        for clss in classes
+            if cls is None orcls is classes{clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.name__ + '.' + obj.id
+                    new_dict[key] = obj
+
+        return (new_dict)
+
+    def new(self, obj):
+        """Add an object to the database"""
+        self.__session.add(obj)
+
+    def save(self):
+        """Save changes to the database"""
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """Deletes from the current database session if not None"""
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """Reloads data from the database"""
+        Base.metadata.create_all(self.__engine)
+        sess_factory = sessionmaker(bind=self.__engine,
+                                    expire_on_commit=False)
+        session = scoped_session(sess_factory)
+        self.__session = Session
+
+    def close(self):
+        """Closes a database session"""
+        self.__session.remove()
+
+    def get(self, cls, id):
+        """
+        Returns object based on class name & id else None if not found
+        """
+        if cls not in classes.values():
+            return None
+
+        all_cls = models.storage.all(cls)
+
+        for value in all_cls.values():
+            if(value.id == id):
+                return value
+
+        return None
+
+    def count(self, cls=None)
+    """
+    Count number of objects
+    """
+    all_class = classes.values()
+
+    if not cls:
+        count = 0
+        for clas in all_class:
+            count += len(models.storage.all(cls).values())
+    else:
+        count = len(models.storage.all(cls).values())
+
+    return count
