@@ -4,11 +4,20 @@ Contains the Database Storage class
 """
 
 import models
+from models.county import County
+from models.subcounty import Subcounty
+from models.church import Church
+from models.infinance import Infinance
+from models.outfinance import Outfinance
+from models.deptfinance import Deptfinance
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {}
+classes = {"County": County, "Subcounty": Subcounty, "Church": Church,
+           "Infinance": Infinance, "Outfinance": Outfinance, 
+           "Deptfinance": Deptfinance}
+
 
 class DBStorage:
     """Interacts with the MySQL database"""
@@ -21,7 +30,6 @@ class DBStorage:
         MSQL_PWD = getenv('MSQL_PWD')
         MSQL_HOST = getenv('MSQL_HOST')
         MSQL_DB = getenv('MSQL_DB')
-        MSQL_ENV = getenv('MSQL_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(MSQL_USER,
@@ -33,7 +41,7 @@ class DBStorage:
         """Queries the current database session"""
         new_dict = {}
 
-        for clss in classes
+        for clss in classes:
             if cls is None orcls is classes{clss] or cls is clss:
                 objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
@@ -64,7 +72,7 @@ class DBStorage:
         self.__session = Session
 
     def close(self):
-        """Closes a database session"""
+        """Call remove on private session"""
         self.__session.remove()
 
     def get(self, cls, id):
@@ -77,7 +85,7 @@ class DBStorage:
         all_cls = models.storage.all(cls)
 
         for value in all_cls.values():
-            if(value.id == id):
+            if (value.id == id):
                 return value
 
         return None

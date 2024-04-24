@@ -6,6 +6,7 @@ Contains the class BaseModel
 
 from datetime import datetime
 import models
+from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,6 +15,7 @@ import uuid
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
 Base = declarative_base()
+
 
 class BaseModel:
     """All classes will inherit from this class"""
@@ -39,7 +41,6 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.updated_at = datetime.utcnow()
 
-
     def __str__(self):
         """String rep of the base_model"""
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
@@ -51,7 +52,6 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
-
     def to_dict(self):
         """Returns a dictionary conataining all keys & values"""
         new_dict = self.__dict__.copy()
@@ -61,7 +61,6 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
 
         return new_dict
-
 
     def delete(self):
         """Deletes the current instance from storage"""
