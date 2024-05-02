@@ -30,3 +30,5 @@ if [ -z "$MSQL_DB" ]; then
 else
     echo "MSQL_DB is set to $MSQL_DB."
 fi
+
+printenv | grep MSQL 

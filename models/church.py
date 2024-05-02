@@ -6,12 +6,12 @@ import models
 from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
-from sqlalchemy import Column, String, ForeignKey, DateTime
+from sqlalchemy import Column, String, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
 
 
 class Church(BaseModel, Base):
-    """ Initializes the Church class"""
+    """Initializes the Church class"""
     __tablename__ = 'churches'
 
     name = Column(String(128), nullable=False)
@@ -23,6 +23,7 @@ class Church(BaseModel, Base):
                                cascade="all, delete, delete-orphan")
     dep_finance = relationship("Deptfinance", backref="deptfinance",
                                cascade="all, delete, delete-orphan")
+
 
     def __init__(self, *args, **kwargs):
         """Initializes a subcounty"""
