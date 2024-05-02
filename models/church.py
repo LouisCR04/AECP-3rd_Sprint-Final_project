@@ -17,11 +17,11 @@ class Church(BaseModel, Base):
     name = Column(String(128), nullable=False)
     subcounty_id = Column(String(60), ForeignKey('subcounties.id'),
                           nullable=False)
-    in_finance = relationship("Infinance", backref="infinance",
+    in_finance = relationship("Infinance", backref="church",
                               cascade="all, delete, delete-orphan")
-    out_finance = relationship("Outfinance", backref="outfinance",
+    out_finance = relationship("Outfinance", backref="church",
                                cascade="all, delete, delete-orphan")
-    dep_finance = relationship("Deptfinance", backref="deptfinance",
+    dep_finance = relationship("Deptfinance", backref="church",
                                cascade="all, delete, delete-orphan")
 
 

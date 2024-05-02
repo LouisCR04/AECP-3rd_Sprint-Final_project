@@ -37,10 +37,48 @@ def delete_county(county_id):
     """Deletes a county"""
     county = storage.get(County, county_id)
 
-    if not state:
+    if not county:
         abort(404)
 
     storage.delete(county)
     storage.save()
 
     return make_response(jsonify({}), 200)
+
+
+@app_views.route('/counties/<counties_id>', methods=['POST'],
+                 strict_slashes=False)
+def post_county(county_id):
+    """Creates a county"""
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    if 'name' not in request.get_json():
+        abort(400, description="Missing name")
+
+    data = request.get_json()
+    instance = County(**data)
+    instance.save()
+    return make_response(jsonify(instance.to_dict()), 201)
+
+
+@app_views.route('/counties/<counties_id>', methods=['POST'],
+                 strict_slashes=False)
+def put_county(county_id):
+    """Updates a county"""
+    county = storage.get(County, county_id)
+
+    if not county:
+        abort(404)
+
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    ignore = ['id', 'updated_at']
+    data = request.get_json()
+
+    for key, value in data.items():
+        if key not in ignore:
+            setattr(county, key, value)
+    storage.save()
+    return make_response(jsonify(state.to_dict()), 200)
