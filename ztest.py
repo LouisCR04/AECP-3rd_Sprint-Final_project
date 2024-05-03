@@ -1,11 +1,34 @@
 #!/usr/bin/python3
-""" Test .get() and .count() methods
+
+"""
+ Test subcounties access from a county
 """
 from models import storage
 from models.county import County
+from models.subcounty import Subcounty
+from models.church import Church
 
-print("All objects: {}".format(storage.count()))
-print("State objects: {}".format(storage.count(County)))
+"""
+ Objects creations
+"""
 
-first_county_id = list(storage.all(County).values())[0].id
-print("First county: {}".format(storage.get(County, first_county_id)))
+church_1_1 = church(subcounty_id=subcounty_2.id, name="AECP Cathedral")
+print("New church: {} in the subcounty: {}".format(church_1_1, subcounty_2))
+church_1_1.save()
+
+church_1_2 = church(subcounty_id=subcounty_2.id, name="AECP Parish")
+print("New church: {} in the subcounty: {}".format(church_1_2, subcounty_2))
+church_1_2.save()
+
+church_1_3 = church(subcounty_id=subcounty_2.id, name="AECP Cathedral")
+print("New church: {} in the subcounty: {}".format(church_1_3, subcounty_2))
+church_1_3.save()
+
+"""
+ Verification
+"""
+print("")
+all_subcounties = storage.all(Subcounty)
+for subcounty_id, subcounty in all_subcounties.items():
+    for church in subcounty.subcounties:
+        print("Find the church {} in the subcounty {}".format(church, subcounty))

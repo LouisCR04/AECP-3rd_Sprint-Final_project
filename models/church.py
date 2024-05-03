@@ -26,5 +26,5 @@ class Church(BaseModel, Base):
 
 
     def __init__(self, *args, **kwargs):
-        """Initializes a subcounty"""
+        """Initializes a church class"""
         super().__init__(*args, **kwargs)

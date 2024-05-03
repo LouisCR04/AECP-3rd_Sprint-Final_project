@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    <UL>
+        {% for church in subcounty %}
+        <LI><B>{{ church.name }}</B></LI>
+        {% endfor %}
+    </UL>
+    </LI>
+    {% endfor %}
+{% endblock content%}

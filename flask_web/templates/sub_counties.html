@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for county in counties %}
+    <LI><B>{{ county[0].name }}</B>
+    <UL>
+        {% for subcounty in county[1] %}
+        <LI><B>{{ subcounty.name }}</B></LI>
+        {% endfor %}
+    </UL>
+    </LI>
+    {% endfor %}
+{% endblock content%}
