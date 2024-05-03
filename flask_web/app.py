@@ -57,7 +57,6 @@ def churches(subcounty):
         abort(404)
 
     subcounties = storage.get(Subcounty, subcounty)
-    subcounties = sorted(subcounties, key=lambda k: k.name)
     ch_list = sorted(subcounty.churches, key=lambda k: k.name)
 
     return render_template('churches.html', church=ch_list)
