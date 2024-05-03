@@ -81,15 +81,21 @@ class DBStorage:
         """
         Returns object based on class name & id else None if not found
         """
-        if cls not in classes.values():
-            return None
+        sub = None
+    
+        # Get all Subcounty objects from storage
+        all_subcounties = Storage.all(Subcounty).values()
 
-        all_cls = models.storage.all(cls)
-
-        for value in all_cls.values():
-            if (value.id == id):
-                return value
-
+        # Find the Subcounty object with the matching name
+        for sub_obj in all_subcounties:
+            if sub_obj.name == subcounty:
+                sub = sub_obj
+                break
+    
+        if sub is None:
+            abort(404)
+    
+        ch_list = sorted(sub.churches, key=lambda k: k.name)
         return None
 
     def count(self, cls=None):

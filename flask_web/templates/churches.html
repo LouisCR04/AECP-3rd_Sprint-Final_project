@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
+    <h2>Churches in {{ subcounty.name }}</h2>
     <UL>
-        {% for church in subcounty %}
+        {% for church in church %}
         <LI><B>{{ church.name }}</B></LI>
         {% endfor %}
     </UL>
     </LI>
-    {% endfor %}
 {% endblock content%}

@@ -11,8 +11,11 @@ from models.outfinance import Outfinance
 from models.deptfinance import Deptfinance
 from models import storage
 from flask import Flask, render_template, abort
+from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+CORS(app)
+
 
 @app.teardown_appcontext
 def close_db(error):
@@ -48,18 +51,27 @@ def sub_counties():
                            h_1="Counties")
 
 
-@app.route("/<subcounty>", strict_slashes=False)
-def churches(subcounty):
+@app.route("/<sub_county>", strict_slashes=False)
+def churches(sub_county):
     """Displays a list of churches in the selected subcounty"""
-    valid_subc = [sub.name for sub in storage.all(Subcounty).values()]
 
-    if subcounty not in valid_subc:
+    sub = None
+
+    # Get all Subcounty objects from storage
+    all_subcounties = storage.all(Subcounty).values()
+
+    # Find the Subcounty object with the matching name
+    for sub_obj in all_subcounties:
+        if sub_obj.name == sub_county:
+            sub = sub_obj
+            break
+
+    if sub is None:
         abort(404)
 
-    subcounties = storage.get(Subcounty, subcounty)
-    ch_list = sorted(subcounty.churches, key=lambda k: k.name)
+    ch_list = sorted(sub.churches, key=lambda k: k.name)
 
-    return render_template('churches.html', church=ch_list)
+    return render_template('churches.html', subcounty=sub, church=ch_list)
 
 
 if __name__ == "__main__":

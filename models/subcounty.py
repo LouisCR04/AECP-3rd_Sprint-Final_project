@@ -33,6 +33,6 @@ class Subcounty(BaseModel, Base):
 
         for church in all_churches.values():
             if church.subcounty_id == self.id:
-                church_list.append(subcounty)
+                church_list.append(church)
 
         return church_list

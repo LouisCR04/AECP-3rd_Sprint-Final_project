@@ -47,8 +47,9 @@
                 <!--/.navbar-header-->
                 <div id="main-nav" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav" id="mainNav">
-                        <li class="active"><a href="#home" class="scroll-link">Home</a></li>
-                        <li><a href="churches.html">Churches</a></li>
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="{{ url_for('counties') }}">Counties</a></li>
+                        <li><a href="{{ url_for('sub_counties') }}">Subcounties</a></li>
                         <li><a href="#aboutUs" class="scroll-link">About Us</a></li>
                         <li><a href="#contactUs" class="scroll-link">Contact Us</a></li>
                     </ul>
