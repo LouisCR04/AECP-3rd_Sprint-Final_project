@@ -24,7 +24,7 @@ def close_db(error):
 @app.route('/', strict_slashes=False)
 def home():
     """This is the home page route"""
-    return print("Home")
+    return render_template('index.html')
 
 @app.route('/counties', strict_slashes=False)
 def counties_route():
