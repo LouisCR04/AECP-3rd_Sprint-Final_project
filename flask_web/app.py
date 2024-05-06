@@ -76,6 +76,36 @@ def churches(sub_county):
     return render_template('churches.html', subcounty=sub, church=ch_list)
 
 
+@app.route("/<sub_county>/<church>", strict_slashes=False)
+def church(sub_county, church):
+    """Displays Financial data of the church"""
+
+    sub = None
+
+    # Get all Subcounty objects from storage
+    all_subcounties = storage.all(Subcounty).values()
+
+    # Find the Subcounty object with the matching name
+    for sub_obj in all_subcounties:
+        if sub_obj.name == sub_county:
+            sub = sub_obj
+            break
+
+    if sub is None:
+        abort(404)
+
+    ch_list = sorted(sub.churches, key=lambda k: k.name)
+
+    chur = church
+
+    for ch in ch_list:
+        if ch == church:
+            chur = ch
+            break
+
+    return render_template('ch.html', church=chur)
+
+
 if __name__ == "__main__":
     """Run if main"""
     app.run(host='0.0.0.0', port=5000)
