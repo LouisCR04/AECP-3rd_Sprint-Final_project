@@ -12,6 +12,7 @@ from models.deptfinance import Deptfinance
 from models import storage
 from flask import Flask, render_template, abort
 from flask_cors import CORS
+#import uuid
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 CORS(app)
@@ -33,7 +34,9 @@ def counties():
     """Displays a list of Counties"""
     counties = storage.all(County).values()
     counties = sorted(counties, key=lambda k: k.name)
+    #cache_id = str(uuid.uuid4())
     return render_template('counties.html', counties=counties)
+    #cache_id=cache_id
 
 
 @app.route("/subcounties", strict_slashes=False)

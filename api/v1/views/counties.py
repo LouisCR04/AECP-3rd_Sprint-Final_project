@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # county.py
 
-"""Handles all default RestFul API actions for States"""
+"""Handles all default RestFul API actions for Counties"""
 
 from models.county import County
 from models import storage
@@ -20,18 +20,18 @@ def get_counties():
     return jsonify(list_counties)
 
 
-@app_views.route('/counties/<counties_id>', methods=['GET'],
+@app_views.route('/counties/<county_id>', methods=['GET'],
                  strict_slashes=False)
-def get_state(state_id):
+def get_county(county_id):
     """Retrieves a specific county"""
-    county = storage.get(State, county_id)
+    county = storage.get(County, county_id)
     if not county:
         abort(404)
 
     return jsonify(county.to_dict())
 
 
-@app_views.route('/counties/<counties_id>', methods=['DELETE'],
+@app_views.route('/counties/<county_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_county(county_id):
     """Deletes a county"""
@@ -46,7 +46,7 @@ def delete_county(county_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/counties/<counties_id>', methods=['POST'],
+@app_views.route('/counties/<county_id>', methods=['POST'],
                  strict_slashes=False)
 def post_county(county_id):
     """Creates a county"""
@@ -62,7 +62,7 @@ def post_county(county_id):
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/counties/<counties_id>', methods=['POST'],
+@app_views.route('/counties/<county_id>', methods=['PUT'],
                  strict_slashes=False)
 def put_county(county_id):
     """Updates a county"""
@@ -81,4 +81,4 @@ def put_county(county_id):
         if key not in ignore:
             setattr(county, key, value)
     storage.save()
-    return make_response(jsonify(state.to_dict()), 200)
+    return make_response(jsonify(county.to_dict()), 200)

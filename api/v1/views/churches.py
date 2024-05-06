@@ -126,7 +126,7 @@ def churches_search():
 
     if not data or not len(data) or (
             not counties and
-            not subcounties and
+            not subcounties):
         churches = storage.all(Church).values()
         list_churches = []
         for church in churches:

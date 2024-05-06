@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
+    <h1>County List</h1>
     {% for county in counties %}
-        <LI><B>{{ county["name"] }}</B></LI>
+	<li><a href="#" class="btn-theme btn-small">{{ county["name"] }}</a></li>
     {% endfor %}
 {% endblock content%}

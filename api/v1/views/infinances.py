@@ -42,7 +42,6 @@ def get_infinance(infinance_id):
 
 @app_views.route('/infinances/<infinance_id>', methods=['DELETE'],
                  strict_slashes=False)
-@swag_from('documentation/infinances/delete_infinances.yml', methods=['DELETE'])
 def delete_infinance(infinance_id):
     """
     Deletes an Infinance Object

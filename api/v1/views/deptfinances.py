@@ -9,7 +9,7 @@
 from models.county import County
 from models.subcounty import Subcounty
 from models.church import Church
-from models.deptfinance import deptfinance
+from models.deptfinance import Deptfinance
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -45,7 +45,6 @@ def get_deptfinance(deptfinance_id):
 
 @app_views.route('/deptfinances/<deptfinance_id>', methods=['DELETE'],
                  strict_slashes=False)
-@swag_from('documentation/deptfinances/delete_deptfinances.yml', methods=['DELETE'])
 def delete_deptfinance(deptfinance_id):
     """
     Deletes a Deptfinance Object

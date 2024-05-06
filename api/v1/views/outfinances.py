@@ -6,7 +6,7 @@
 from models.county import County
 from models.subcounty import Subcounty
 from models.church import Church
-from models.outfinance import outfinance
+from models.outfinance import Outfinance
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -42,7 +42,6 @@ def get_outfinance(outfinance_id):
 
 @app_views.route('/outfinances/<outfinance_id>', methods=['DELETE'],
                  strict_slashes=False)
-@swag_from('documentation/outfinances/delete_outfinances.yml', methods=['DELETE'])
 def delete_outfinance(outfinance_id):
     """
     Deletes an Outfinance Object
