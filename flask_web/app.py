@@ -49,9 +49,8 @@ def sub_counties():
     for county in counties:
         st_ct.append([county, sorted(county.subcounties, key=lambda k: k.name)])
 
-    return render_template('sub_counties.html',
-                           counties=st_ct,
-                           h_1="Counties")
+    return render_template('counties.html',
+                           counties=st_ct)
 
 
 @app.route("/<sub_county>", strict_slashes=False)
