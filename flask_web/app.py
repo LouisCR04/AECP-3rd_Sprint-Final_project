@@ -12,9 +12,10 @@ from models.deptfinance import Deptfinance
 from models import storage
 from flask import Flask, render_template, abort
 from flask_cors import CORS
+import sys
 #import uuid
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+app = Flask(__name__, static_url_path='/static')
 CORS(app)
 
 
@@ -28,16 +29,16 @@ def close_db(error):
 def home():
     return render_template('index.html')
 
-
+"""
 @app.route("/counties", strict_slashes=False)
 def counties():
-    """Displays a list of Counties"""
+    """"Displays a list of Counties""""
     counties = storage.all(County).values()
     counties = sorted(counties, key=lambda k: k.name)
     #cache_id = str(uuid.uuid4())
     return render_template('counties.html', counties=counties)
     #cache_id=cache_id
-
+"""
 
 @app.route("/subcounties", strict_slashes=False)
 def sub_counties():
@@ -96,13 +97,17 @@ def church(sub_county, church):
 
     ch_list = sorted(sub.churches, key=lambda k: k.name)
 
-    chur = church
+    chur = None
 
     for ch in ch_list:
-        if ch == church:
+        if ch.name == church:
             chur = ch
             break
 
+    print(f"church = {church}")
+    print(f"chur = {chur}")
+    print(f"ch = {ch}")
+    print("Testaft", file=sys.stderr)
     return render_template('ch.html', church=chur)
 
 
