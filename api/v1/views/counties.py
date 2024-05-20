@@ -13,7 +13,6 @@ def get_counties():
     """Retrieves a list of all counties"""
     all_counties = storage.all(County).values()
     list_counties = []
-
     for county in all_counties:
         list_counties.append(county.to_dict())
 

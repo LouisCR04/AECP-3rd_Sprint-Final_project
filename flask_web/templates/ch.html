@@ -1,6 +1,58 @@
 {% extends "layout.html" %}
 {% block content %}
     <h2>{{ church.name }}</h2>
-    <p>{{ church.id }}</p>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <table id="financeTable" class="display">
+        <thead>
+            <tr>
+                <th>FinanceType</th>
+                <th>Date</th>
+		<th>Amount</th>
+                <!-- Add more table headers if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table body will be populated dynamically -->
+        </tbody>
+    </table>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const churchId = "{{ church.id }}";  // Specify the church ID you want to fetch
+
+            fetch(`http://localhost:5001/api/v1/churches/${churchId}/infinances`)
+                .then(response => response.json())
+                .then(data => {
+                    const infinances = data;
+
+                    // Populate table with counties data
+                    const tableBody = document.querySelector('#financeTable tbody');
+                    infinances.forEach(infinance => {  // Use a singular name for the loop variable
+                        const row = tableBody.insertRow();
+                        row.innerHTML = `
+			    <td>${infinance.finance_type}</td>
+			    <td>${infinance.dated}</td>
+                            <td>${infinance.amount}</td>
+                            <!-- Add more cells if needed -->
+                        `;
+                    });
+
+                    // Initialize DataTables after populating the table
+                    $('#financeTable').DataTable();
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                });
+        });
+    </script>
+</body>
+</html>
 
 {% endblock content%}

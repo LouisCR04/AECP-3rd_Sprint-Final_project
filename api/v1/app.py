@@ -14,6 +14,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
 
+
 @app.teardown_appcontext
 def close_db(error):
     """ Close db Storage """
@@ -33,5 +34,5 @@ if __name__ == "__main__":
     if not host:
         host = '0.0.0.0'
     if not port:
-        port = '5000'
+        port = '5001'
     app.run(host=host, port=port, threaded=True)
