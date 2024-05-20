@@ -23,7 +23,7 @@ def get_outfinances(church_id):
     if not church:
         abort(404)
 
-    outfinances = [outfinance.to_dict() for outfinance in church.outfinances]
+    outfinances = [out_finance.to_dict() for out_finance in church.out_finance]
 
     return jsonify(outfinances)
 
@@ -74,12 +74,28 @@ def post_outfinance(church_id):
 
     data = request.get_json()
 
+    """Single Object
     if 'amount' not in request.get_json():
         abort(400, description="Missing amount")
 
     data['church_id'] = church_id
     instance = Outfinance(**data)
     instance.save()
+    """
+    # Check if the data is a list
+    if isinstance(data, list):
+        for item in data:
+            if 'amount' not in item:
+                abort(400, description="Missing amount in one of the objects")
+            item['church_id'] = church_id
+            instance = Outfinance(**item)
+            instance.save()
+    else:
+        if 'amount' not in data:
+            abort(400, description="Missing amount")
+        data['church_id'] = church_id
+        instance = Outfinance(**data)
+        instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
 
 

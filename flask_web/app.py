@@ -39,6 +39,34 @@ def counties():
     return render_template('counties.html', counties=counties)
     #cache_id=cache_id
 """
+def get_church_details(sub_county, church):
+    """Get subcounty and church details"""
+
+    sub = None
+
+    # Get all Subcounty objects from storage
+    all_subcounties = storage.all(Subcounty).values()
+
+    # Find the Subcounty object with the matching name
+    for sub_obj in all_subcounties:
+        if sub_obj.name == sub_county:
+            sub = sub_obj
+            break
+
+    if sub is None:
+        return None, None
+
+    ch_list = sorted(sub.churches, key=lambda k: k.name)
+
+    chur = None
+
+    for ch in ch_list:
+        if ch.name == church:
+            chur = ch
+            break
+    
+    return chur
+
 
 @app.route("/subcounties", strict_slashes=False)
 def sub_counties():
@@ -79,7 +107,7 @@ def churches(sub_county):
 
 @app.route("/<sub_county>/<church>", strict_slashes=False)
 def church(sub_county, church):
-    """Displays Financial data of the church"""
+    """Displays Financial options"""
 
     sub = None
 
@@ -103,12 +131,32 @@ def church(sub_county, church):
         if ch.name == church:
             chur = ch
             break
+    return render_template('ch.html', subcounty=sub, church=chur)
 
-    print(f"church = {church}")
-    print(f"chur = {chur}")
-    print(f"ch = {ch}")
-    print("Testaft", file=sys.stderr)
-    return render_template('ch.html', church=chur)
+
+@app.route("/<sub_county>/<church>/infinances", strict_slashes=True)
+def ichurch(sub_county, church):
+    """Displays Financial revenue into the church"""
+    chur = get_church_details(sub_county, church)
+
+    return render_template('infinances.html', church=chur)
+
+
+@app.route("/<sub_county>/<church>/outfinances", strict_slashes=False)
+def ochurch(sub_county, church):
+    """Financial expenditure of the church"""
+    chur = get_church_details(sub_county, church)
+
+    return render_template('outfinances.html', church=chur)
+
+
+@app.route("/<sub_county>/<church>/deptfinances", strict_slashes=True)
+def deptchurch(sub_county, church):
+    """Financial revenue from different departments of the church"""
+    chur = get_church_details(sub_county, church)
+
+    return render_template('deptfinances.html', church=chur)
+
 
 
 if __name__ == "__main__":
