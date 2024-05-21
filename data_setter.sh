@@ -1,1 +1,1 @@
-curl -X POST http://0.0.0.0:5001/api/v1/churches/876693a6-5d5f-4c19-b3c8-314fc5b101a2/outfinances -H "Content-Type: application/json" -d @Mock_data-out.json -vvv
+curl -X POST http://0.0.0.0:5001/api/v1/churches/5c7e6b1b-c69c-43e4-a698-807f822af973/outfinances -H "Content-Type: application/json" -d @out_Finances.json -vvv
