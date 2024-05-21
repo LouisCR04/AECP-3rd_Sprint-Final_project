@@ -1,10 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
+
+    <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-pie.min.js"></script>
+    <style type="text/css">      
+      html, body, #container { 
+        width: 100%; height: 100%; margin: 0; padding: 0; 
+      } 
+    </style>
     <h2>{{ church.name }}</h2>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <body>
+        <div id="container"></div>
+    <script>
+      anychart.onDocumentReady(function () {
+        // add the data
+        let data = anychart.data.set([
+          ["Chennai Super Kings", 5],
+          ["Mumbai Indians", 5],
+          ["Kolkatta Knight Riders", 2],
+          ["Deccan Chargers", 1],
+          ["Gujarat Titans", 1],
+          ["Rajasthan Royal", 1],
+          ["Sunrisers Hyderabad", 1],
+        ]);
+        // create a pie chart with the data
+        let chart = anychart.pie(data);
+        // set the chart title
+        chart.title("IPL Winnership Over 16 Seasons");
+        // set container id for the chart
+        chart.container("container");
+        // initiate chart drawing
+        chart.draw();
+      });
+    </script>
     <table id="financeTable" class="display">
         <thead>
             <tr>

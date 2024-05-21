@@ -45,9 +45,9 @@ def delete_county(county_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/counties/<county_id>', methods=['POST'],
+@app_views.route('/counties', methods=['POST'],
                  strict_slashes=False)
-def post_county(county_id):
+def post_county():
     """Creates a county"""
     if not request.get_json():
         abort(400, description="Not a JSON")

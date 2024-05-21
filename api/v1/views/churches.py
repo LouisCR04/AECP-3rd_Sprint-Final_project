@@ -71,8 +71,8 @@ def post_church(subcounty_id):
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    if 'user_id' not in request.get_json():
-        abort(400, description="Missing user_id")
+    """if 'user_id' not in request.get_json():
+        abort(400, description="Missing user_id")"""
 
     data = request.get_json()
 

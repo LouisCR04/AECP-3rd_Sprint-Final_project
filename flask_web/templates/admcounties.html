@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>County List</h1>
+    <ul>
+    {% for county in counties %}
+        <li>
+            <a href="#" class="btn-theme btn-small" onclick="showDropdown('{{ county[0].name }}')">{{ county[0].name }}</a>
+            <ul id="dropdown-{{ county[0].name }}" style="display: none;">
+                {% for subcounty in county[1] %}
+                    <li><a href="/{{ subcounty.name }}">{{ subcounty.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <!-- Include custom.js -->
+    <script src="{{ url_for('static', filename='JS/custom_02.js') }}"></script>
+{% endblock content%}

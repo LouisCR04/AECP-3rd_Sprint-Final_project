@@ -29,16 +29,18 @@ def close_db(error):
 def home():
     return render_template('index.html')
 
-"""
-@app.route("/counties", strict_slashes=False)
+
+@app.route("/admin/counties", strict_slashes=False)
 def counties():
-    """"Displays a list of Counties""""
+    """Displays a list of Counties"""
     counties = storage.all(County).values()
     counties = sorted(counties, key=lambda k: k.name)
-    #cache_id = str(uuid.uuid4())
-    return render_template('counties.html', counties=counties)
-    #cache_id=cache_id
-"""
+    st_ct = []
+
+    for county in counties:
+        st_ct.append([county, sorted(county.subcounties, key=lambda k: k.name)])
+    return render_template('admcounties.html', counties=st_ct)
+
 def get_church_details(sub_county, church):
     """Get subcounty and church details"""
 
@@ -66,6 +68,11 @@ def get_church_details(sub_county, church):
             break
     
     return chur
+
+@app.route("/admin", strict_slashes=False)
+def admin():
+    """Handles the administration route"""
+    return render_template('admin.html')
 
 
 @app.route("/subcounties", strict_slashes=False)

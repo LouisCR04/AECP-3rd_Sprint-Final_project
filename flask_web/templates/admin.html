@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Admin</h2>
+<body>
+    <p>Add a New County:</p>
+    <form id="addCountyForm">
+        <label for="name">County Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add church</button>
+    </form>
+
+    <div class="button-container">
+        <a href="/admin/counties" class="revenue-button">Counties</a>
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/custom_03.js') }}"></script>
+
+</body>
+{% endblock content%}
