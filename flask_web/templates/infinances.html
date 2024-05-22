@@ -4,45 +4,73 @@
     <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-pie.min.js"></script>
     <style type="text/css">      
-      html, body, #container { 
-        width: 100%; height: 100%; margin: 0; padding: 0; 
-      } 
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            width: 80%;
+            height: 80vh;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
     <h2>{{ church.name }}</h2>
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <body>
-        <div id="container"></div>
+    <div id="container"></div>
     <script>
-      anychart.onDocumentReady(function () {
-        // add the data
-        let data = anychart.data.set([
-          ["Chennai Super Kings", 5],
-          ["Mumbai Indians", 5],
-          ["Kolkatta Knight Riders", 2],
-          ["Deccan Chargers", 1],
-          ["Gujarat Titans", 1],
-          ["Rajasthan Royal", 1],
-          ["Sunrisers Hyderabad", 1],
-        ]);
-        // create a pie chart with the data
-        let chart = anychart.pie(data);
-        // set the chart title
-        chart.title("IPL Winnership Over 16 Seasons");
-        // set container id for the chart
-        chart.container("container");
-        // initiate chart drawing
-        chart.draw();
-      });
+    anychart.onDocumentReady(function () {
+        const churchId = "{{ church.id }}";
+        // Fetch data from the API endpoint
+        fetch(`http://localhost:5001/api/v1/churches/${churchId}/infinances`)
+            .then(response => response.json())
+            .then(jsonData => {
+                // Aggregate amounts by finance type
+                const aggregatedData = jsonData.reduce((acc, item) => {
+                    if (!acc[item.finance_type]) {
+                        acc[item.finance_type] = 0;
+                    }
+                    acc[item.finance_type] += item.amount;
+                    return acc;
+                }, {});
+                
+                // Transform aggregated data to the format expected by AnyChart
+                const formattedData = Object.entries(aggregatedData);
+                
+                // Create a pie chart with the data
+                let chart = anychart.pie(formattedData);
+
+                // Set the chart title
+                chart.title("Finances Pie Chart");
+                
+
+                // Explicitly set chart size
+                chart.width('100%');
+                chart.height('100%');
+
+                // Set container id for the chart
+                chart.container("container");
+
+                // Initiate chart drawing
+                chart.draw();
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
     </script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <!-- DataTables CSS -->
     <table id="financeTable" class="display">
         <thead>
             <tr>
                 <th>FinanceType</th>
-		<th>Amount</th>
-		<th>Date</th>
-                <!-- Add more table headers if needed -->
+                <th>Amount</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
@@ -55,8 +83,8 @@
     <!-- DataTables JavaScript -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
-	jQuery.noConflict();
-	(function($) {
+    jQuery.noConflict();
+    (function($) {
         document.addEventListener("DOMContentLoaded", function () {
             const churchId = "{{ church.id }}";  // Specify the church ID you want to fetch
 
@@ -69,11 +97,11 @@
                     const tableBody = document.querySelector('#financeTable tbody');
                     infinances.forEach(infinance => {  // Use a singular name for the loop variable
                         const row = tableBody.insertRow();
-			const formattedDate = formatDate(infinance.dated);
+                        const formattedDate = formatDate(infinance.dated);
                         row.innerHTML = `
-			    <td>${infinance.finance_type}</td>
+                            <td>${infinance.finance_type}</td>
                             <td>${infinance.amount}</td>
-			    <td>${formattedDate}</td>
+                            <td>${formattedDate}</td>
                             <!-- Add more cells if needed -->
                         `;
                     });
@@ -85,18 +113,19 @@
                     console.error("Error fetching data:", error);
                 });
 
-    // Function to format date to dd mm yyyy
-    function formatDate(dateString) {
-        const dateObj = new Date(dateString);
-        const day = dateObj.getDate().toString().padStart(2, '0');
-        const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because January is 0
-        const year = dateObj.getFullYear().toString();
-        return `${day}/${month}/${year}`;
-    }
+            // Function to format date to dd mm yyyy
+            function formatDate(dateString) {
+                const dateObj = new Date(dateString);
+                const day = dateObj.getDate().toString().padStart(2, '0');
+                const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because January is 0
+                const year = dateObj.getFullYear().toString();
+                return `${year}/${month}/${day}`;
+            }
         });
-	})(jQuery);
+    })(jQuery);
     </script>
 </body>
 </html>
 
-{% endblock content%}
+{% endblock content %}
+
