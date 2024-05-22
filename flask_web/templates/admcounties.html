@@ -1,18 +1,56 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>County List</h1>
-    <ul>
+    <h2>County List</h2>
+    <p>Choose county to edit:</p>
+    <div class="county-list">
     {% for county in counties %}
-        <li>
-            <a href="#" class="btn-theme btn-small" onclick="showDropdown('{{ county[0].name }}')">{{ county[0].name }}</a>
-            <ul id="dropdown-{{ county[0].name }}" style="display: none;">
-                {% for subcounty in county[1] %}
-                    <li><a href="/{{ subcounty.name }}">{{ subcounty.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
+	<div class="county-item">
+	    <button class="btn-theme btn-small county-button" onclick="showDropdown('{{ county[0].name }}')">{{ county[0].name }}</button>
+	    <ul id="dropdown-{{ county[0].name }}" class="subcounty-list" style="display: none;">
+		{% for subcounty in county[1] %}
+		    <li><a href="/admin/{{ subcounty.name }}">{{ subcounty.name }}</a></li>
+		{% endfor %}
+	    </ul>
+	</div>
     {% endfor %}
-    </ul>
+    </div>
+
+
+    <style>
+        .county-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .county-item {
+            margin-bottom: 10px;
+        }
+	.county-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transform: perspective(1px) translateZ(0);
+        }
+        .county-button:hover {
+            background-color: #45a049;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .subcounty-list {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+    </style>
 
     <!-- Include custom.js -->
     <script src="{{ url_for('static', filename='JS/custom_02.js') }}"></script>

@@ -1,13 +1,17 @@
-document.getElementById('addCountyForm').addEventListener('submit', function(event) {
+document.getElementById('addTransactionForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const countyName = document.getElementById('name').value;
+    const financeType = document.getElementById('financeType').value;
+    const amount = document.getElementById('amount').value;
+    const dated = document.getElementById('dated').value;
 
     const data = {
-        name: countyName
+        finance_type: financeType,
+        amount: amount,
+        dated: dated
     };
 
-    fetch('http://localhost:5001/api/v1/counties', {
+    fetch(`http://localhost:5001/api/v1/churches/${churchId}/infinances`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +25,7 @@ document.getElementById('addCountyForm').addEventListener('submit', function(eve
         return response.json();
     })
     .then(data => {
-        alert('County added successfully!');
+        alert('Transaction added successfully!');
         console.log(data);
     })
     .catch(error => {

@@ -1,13 +1,14 @@
-document.getElementById('addCountyForm').addEventListener('submit', function(event) {
+document.getElementById('addChurchForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const countyName = document.getElementById('name').value;
+    const churchName = document.getElementById('name').value;
 
     const data = {
-        name: countyName
+        name: churchName
     };
 
-    fetch('http://localhost:5001/api/v1/counties', {
+    console.log(subcountyId);
+    fetch(`http://localhost:5001/api/v1/subcounties/${subcountyId}/churches`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +22,7 @@ document.getElementById('addCountyForm').addEventListener('submit', function(eve
         return response.json();
     })
     .then(data => {
-        alert('County added successfully!');
+        alert('Church added successfully!');
         console.log(data);
     })
     .catch(error => {

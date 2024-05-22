@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ subcounty.name}} {{subcounty.id }}</h2>
+<body>
+    <p>Add a New Church:</p>
+    <form id="addChurchForm">
+        <label for="name">Church Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add church</button>
+    </form>
+
+    <div class="button-container">
+        <a href="/admin/counties" class="revenue-button">Click here to edit (Will return to admin Counties page, still under construction)</a>
+    </div>
+
+    <script>
+	const subcountyId = "{{ subcounty.id }}";
+    </script>
+    <script src="{{ url_for('static', filename='JS/custom_04.js') }}"></script>
+
+</body>
+{% endblock content%}

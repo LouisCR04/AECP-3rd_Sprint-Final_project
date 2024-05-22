@@ -29,19 +29,7 @@ def close_db(error):
 def home():
     return render_template('index.html')
 
-
-@app.route("/admin/counties", strict_slashes=False)
-def counties():
-    """Displays a list of Counties"""
-    counties = storage.all(County).values()
-    counties = sorted(counties, key=lambda k: k.name)
-    st_ct = []
-
-    for county in counties:
-        st_ct.append([county, sorted(county.subcounties, key=lambda k: k.name)])
-    return render_template('admcounties.html', counties=st_ct)
-
-def get_church_details(sub_county, church):
+def get_sub_details(sub_county):
     """Get subcounty and church details"""
 
     sub = None
@@ -56,8 +44,13 @@ def get_church_details(sub_county, church):
             break
 
     if sub is None:
-        return None, None
+        return None
 
+    return sub
+
+def get_church_details(sub_county, church):
+    """Get subcounty and church details"""
+    sub = get_sub_details(sub_county)
     ch_list = sorted(sub.churches, key=lambda k: k.name)
 
     chur = None
@@ -73,6 +66,32 @@ def get_church_details(sub_county, church):
 def admin():
     """Handles the administration route"""
     return render_template('admin.html')
+
+
+@app.route("/admin/counties", strict_slashes=False)
+def counties():
+    """Displays a list of Counties to edit"""
+    counties = storage.all(County).values()
+    counties = sorted(counties, key=lambda k: k.name)
+    st_ct = []
+
+    for county in counties:
+        st_ct.append([county, sorted(county.subcounties, key=lambda k: k.name)])
+    return render_template('admcounties.html', counties=st_ct)
+
+
+@app.route("/admin/<subcounty>", strict_slashes=False)
+def adminsubcounties(subcounty):
+    """Edits subcounties details"""
+    sub = get_sub_details(subcounty)
+    return render_template('admchurch.html', subcounty=sub)
+
+
+@app.route("/admin/<subcounty>/<church_id>", strict_slashes=False)
+def adminsubchurch(subcounty, church_id):
+    """Edits subcounties details"""
+    sub = get_sub_details(subcounty)
+    return render_template('admfinance.html', subcounty=sub, churchId=church_id)
 
 
 @app.route("/subcounties", strict_slashes=False)
